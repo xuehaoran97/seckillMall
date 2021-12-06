@@ -1,0 +1,44 @@
+spring:
+  thymeleaf:
+    cache: false
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://8.141.148.43:3306/seckill?useUnicode=true&characterEncoding=UTF-8&serverTimeZone=Asia/Shanghai
+    username: root
+    password:
+    hikari:
+      pool-name: DataHikariCP
+      idle-timeout: 10000
+      maximum-pool-size: 5
+      auto-commit: true
+      max-lifetime: 10000
+      connection-test-query: SELECT 1
+
+  #redis
+  redis:
+    #服务器地址
+    host: 8.141.148.43
+    #端口
+    port: 6379
+    #数据库
+    database: 0
+    #超时时间
+    timeout: 10000ms
+    lettuce:
+      #最大连接数
+      max-active: 8
+      #最大阻塞等待时间
+      max-wait: 10000ms
+
+
+
+mybatis-plus:
+  mapper-locations: classPath*:/mapper/*Mapper.xml
+  type-aliases-package: com.xxxx.seckillmall.pojo
+
+logging:
+  level:
+    com.xxxx.seckillmall: debug
+
+
