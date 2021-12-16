@@ -4,9 +4,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://8.141.148.43:3306/seckill?useUnicode=true&characterEncoding=UTF-8&serverTimeZone=Asia/Shanghai
+    url: jdbc:mysql://192.168.10.101/seckill?useUnicode=true&characterEncoding=UTF-8&serverTimeZone=Asia/Shanghai
     username: root
-    password:
+    password: Xuehaoran090214
     hikari:
       pool-name: DataHikariCP
       idle-timeout: 10000
@@ -18,7 +18,7 @@ spring:
   #redis
   redis:
     #服务器地址
-    host: 8.141.148.43
+    host: 192.168.10.101
     #端口
     port: 6379
     #数据库
