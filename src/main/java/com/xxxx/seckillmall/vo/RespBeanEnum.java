@@ -16,6 +16,11 @@ public enum RespBeanEnum {
 
     BIND_ERROR(200300,"绑定异常"),
 
+    STOCK_EMPTY(500100,"库存不足"),
+
+    REPEATE_ERROR(500200,"重复下单");
+
+
     ;
     private Integer code;
     private String message;

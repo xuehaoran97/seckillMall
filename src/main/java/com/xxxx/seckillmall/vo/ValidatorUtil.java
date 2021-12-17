@@ -5,6 +5,9 @@ import org.thymeleaf.util.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+/*
+这里我所有的手机号都放行了
+ */
 @Slf4j
 public class ValidatorUtil {
 
@@ -16,6 +19,7 @@ public class ValidatorUtil {
         }
         Matcher matcher = mobile_pattern.matcher(mobile);
 
-        return matcher.matches();
+        //return matcher.matches();
+        return true;
     }
 }

@@ -34,7 +34,7 @@ spring:
 
 
 mybatis-plus:
-  mapper-locations: classPath*:/mapper/*Mapper.xml
+  mapper-locations: classpath*:mapper/*.xml
   type-aliases-package: com.xxxx.seckillmall.pojo
 
 logging:
