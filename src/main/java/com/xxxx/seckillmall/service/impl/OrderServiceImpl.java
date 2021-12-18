@@ -1,6 +1,8 @@
 package com.xxxx.seckillmall.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xxxx.seckillmall.mapper.OrderMapper;
 import com.xxxx.seckillmall.pojo.Order;
@@ -12,7 +14,9 @@ import com.xxxx.seckillmall.service.ISeckillGoodsService;
 import com.xxxx.seckillmall.service.ISeckillOrderService;
 import com.xxxx.seckillmall.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
 
 import java.util.Date;
 
@@ -37,6 +41,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
 
     @Override
     public Order seckill(User user, GoodsVo goods) {
@@ -44,7 +51,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         //扣减秒杀表的库存
         SeckillGoods seckillGoods = seckillGoodsService.getOne(new QueryWrapper<SeckillGoods>().eq("goods_id", goods.getId()));
         seckillGoods.setStockCount(seckillGoods.getStockCount()-1);
-        seckillGoodsService.updateById(seckillGoods);
+        //seckillGoodsService.updateById(seckillGoods);
+        //减库存时判断库存是否足够
+        seckillGoodsService.update(new UpdateWrapper<SeckillGoods>().set("stock_count",seckillGoods.getStockCount()).eq("id",seckillGoods.getId()).gt("stock_count",0));
 
         Order order = new Order();
         order.setUserId(user.getId().toString());
@@ -62,6 +71,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         seckillOrder.setUserId(user.getId().toString());
         seckillOrder.setGoodsId(goods.getId());
         seckillOrderService.save(seckillOrder);
+
+        redisTemplate.opsForValue().set("order:" + user.getId() + ":" + goods.getId(), JSON.toJSONString(seckillOrder));
 
         return order;
     }

@@ -63,7 +63,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         //判断密码是否正确
         if(!MD5Utils.formPassToDBPass(password,user.getSalt()).equals(user.getPassword())){
-            throw new GlobalException(RespBeanEnum.LOHGIN_ERROR);
+            throw new GlobalException(RespBeanEnum.MOBILE_ERROR);
         }
 
 
@@ -97,5 +97,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
 
         return user;
+    }
+
+    /**
+     * 更新密码
+     *
+     * @param userTicket
+     * @param id
+     * @param password
+     * @return
+     */
+    @Override
+    public RespBean updatePassword(String userTicket, Long id, String password) {
+        User user = userMapper.selectById(id);
+        if (user == null) {
+            throw new GlobalException(RespBeanEnum.MOBILE_NOT_EXIST);
+        }
+        user.setPassword(MD5Utils.inputPassToDBPass(password, user.getSalt()));
+        int result = userMapper.updateById(user);
+        if (1 == result) {
+            //删除Redis
+            redisTemplate.delete("user:" + userTicket);
+            return RespBean.success();
+        }
+        return RespBean.error(RespBeanEnum.PASSWORD_UPDATE_FAIL);
     }
 }

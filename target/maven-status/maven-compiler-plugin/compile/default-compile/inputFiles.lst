@@ -12,6 +12,7 @@ D:\IdeaProject\seckillMall\src\main\java\com\xxxx\seckillmall\controller\UserCon
 D:\IdeaProject\seckillMall\src\main\java\com\xxxx\seckillmall\service\impl\GoodsServiceImpl.java
 D:\IdeaProject\seckillMall\src\main\java\com\xxxx\seckillmall\service\impl\SeckillOrderServiceImpl.java
 D:\IdeaProject\seckillMall\src\main\java\com\xxxx\seckillmall\exception\GlobalException.java
+D:\IdeaProject\seckillMall\src\main\java\com\xxxx\seckillmall\utils\UserUtil.java
 D:\IdeaProject\seckillMall\src\main\java\com\xxxx\seckillmall\pojo\Goods.java
 D:\IdeaProject\seckillMall\src\main\java\com\xxxx\seckillmall\utils\CookieUtil.java
 D:\IdeaProject\seckillMall\src\main\java\com\xxxx\seckillmall\validator\IsMobile.java

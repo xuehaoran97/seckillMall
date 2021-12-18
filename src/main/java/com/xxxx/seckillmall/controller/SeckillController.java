@@ -13,9 +13,11 @@ import com.xxxx.seckillmall.vo.GoodsVo;
 import com.xxxx.seckillmall.vo.RespBean;
 import com.xxxx.seckillmall.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.thymeleaf.util.StringUtils;
 
 @Controller
 @RequestMapping("/seckill")
@@ -32,6 +34,9 @@ public class SeckillController {
     @Autowired
     private IOrderService orderService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @RequestMapping("/doSeckill")
     public String doSeckill(Model model, User user, Long goodsId) {
         if(user == null){
@@ -47,10 +52,12 @@ public class SeckillController {
             return "seckillFail";
         }
         //判断是否重复下单
-        SeckillOrder seckillOrder = seckillOrderService.getOne(new QueryWrapper<SeckillOrder>().eq("user_id", user.getId()).eq(
-                "goods_id",
-                goodsId));
-        if(seckillOrder!=null){
+//        SeckillOrder seckillOrder = seckillOrderService.getOne(new QueryWrapper<SeckillOrder>().eq("user_id", user.getId()).eq(
+//                "goods_id",
+//                goodsId));
+
+        String seckillOrder = (String) redisTemplate.opsForValue().get("order:" + user.getId() + ":" + goodsId);
+        if(!StringUtils.isEmpty(seckillOrder)){
             model.addAttribute("errmsg",RespBeanEnum.REPEATE_ERROR.getMessage());
             return "seckillFail";
         }
